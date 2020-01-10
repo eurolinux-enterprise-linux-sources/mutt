@@ -1,0 +1,22 @@
+diff -up mutt-1.5.21/mutt_ssl_gnutls.c.testcert mutt-1.5.21/mutt_ssl_gnutls.c
+--- mutt-1.5.21/mutt_ssl_gnutls.c.testcert	2010-08-25 18:31:40.000000000 +0200
++++ mutt-1.5.21/mutt_ssl_gnutls.c	2013-11-04 14:15:33.956762683 +0100
+@@ -434,8 +434,16 @@ static int tls_compare_certificates (con
+       return 0;
+     }
+ 
+-    ptr = (unsigned char *)strstr((char*)b64_data.data, CERT_SEP) + 1;
+-    ptr = (unsigned char *)strstr((char*)ptr, CERT_SEP);
++    /* find start of cert, skipping junk */
++    ptr = (unsigned char *)strstr((char*)b64_data.data, CERT_SEP);
++    if (!ptr)
++    {
++      gnutls_free(cert.data);
++      FREE (&b64_data_data);
++      return 0;
++    }
++    /* find start of next cert */
++    ptr = (unsigned char *)strstr((char*)ptr + 1, CERT_SEP);
+ 
+     b64_data.size = b64_data.size - (ptr - b64_data.data);
+     b64_data.data = ptr;
