@@ -1,0 +1,16 @@
+diff -up ./mutt_curses.h.cmdline_tls_segfault ./mutt_curses.h
+--- ./mutt_curses.h.cmdline_tls_segfault	2008-11-11 20:55:47.000000000 +0100
++++ ./mutt_curses.h	2014-04-23 10:41:52.000000000 +0200
+@@ -183,7 +183,12 @@ extern COLOR_LINE *ColorIndexList;
+ void ci_init_color (void);
+ void ci_start_color (void);
+ 
++#if defined(HAVE_BKGDSET)
++#define SETCOLOR(X) bkgdset(ColorDefs[X] | ' ')
++#define attrset(X) bkgdset((X) | ' ')
++#else
+ #define SETCOLOR(X) attrset(ColorDefs[X])
++#endif
+ #define ADDCOLOR(X) attron(ColorDefs[X])
+ 
+ #define MAYBE_REDRAW(x) if (option (OPTNEEDREDRAW)) { unset_option (OPTNEEDREDRAW); x = REDRAW_FULL; }

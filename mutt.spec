@@ -16,7 +16,7 @@
 Summary: A text mode mail user agent
 Name: mutt
 Version: 1.5.20
-Release: 4.20091214hg736b6a%{?dist}
+Release: 7.20091214hg736b6a%{?dist}
 Epoch: 5
 # The entire source code is GPLv2+ except
 # pgpewrap.c setenv.c sha1.c wcwidth.c which are Public Domain
@@ -31,6 +31,13 @@ Patch3: mutt-1.5.18-muttrc.patch
 Patch4: mutt-1.5.18-manual.patch
 Patch5: mutt-1.5.20-testcert.patch
 Patch6: mutt-1.5.20-cve-2014-0467.patch
+Patch7: mutt-1.5.20-cmdline_tls_segfault.patch
+# http://dev.mutt.org/trac/ticket/3547
+Patch8: mutt-1.5.21-certscomp.patch
+# http://dev.mutt.org/trac/ticket/3288
+Patch9: mutt-1.5.20-hdrcnt.patch
+# http://dev.mutt.org/trac/ticket/3525
+Patch10: mutt-1.5.20-pop_sigsegv.patch
 Url: http://www.mutt.org/
 Requires: mailcap urlview
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
@@ -72,6 +79,10 @@ for selecting groups of messages.
 %patch4 -p1 -b .manual
 %patch5 -p1 -b .testcert
 %patch6 -p1 -b .cve-2014-0467
+%patch7     -b .cmdline_tls_segfault
+%patch8 -p1
+%patch9 -p1 -b .orig
+%patch10 -p1
 
 install -p -m644 %{SOURCE1} mutt_ldap_query
 
@@ -146,8 +157,21 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/man5/muttrc.*
 
 %changelog
+* Fri Jul 25 2014 Jan Pacner <jpacner@redhat.com> - 5:1.5.20-7.20091214hg736b6a
+- Resolves: #690409 (mutt crash - seg fault in mx_update_context), attempt No. 3
+
+* Wed Jul 23 2014 Jan Pacner <jpacner@redhat.com> - 5:1.5.20-6.20091214hg736b6a
+- Resolves: #690409 (mutt crash - seg fault in mx_update_context), attempt No. 2
+
+* Thu May 15 2014 Jan Pacner <jpacner@redhat.com> - 5:1.5.20-5.20091214hg736b6a
+- Resolves: #1083524 (segmentation fault when sending an e-mail from a command
+  line)
+- Resolves: #750929 (SIGSEGV Crash while parsing certificates file)
+- Resolves: #690409 (mutt crash; seg fault in mx_update_context)
+- Resolves: #674271 (SIGSEGV when browsing pop account)
+
 * Thu Mar 13 2014 Jan Pacner <jpacner@redhat.com> - 5:1.5.20-4.20091214hg736b6a
-- Resolves: #1075872 (CVE-2014-0467, heap-based buffer overflow when parsing
+- Resolves: #1075873 (CVE-2014-0467, heap-based buffer overflow when parsing
   certain headers)
 
 * Wed Jun 29 2011 Honza Horak <hhorak@redhat.com> 5:1.5.20-3.20091214hg736b6a
