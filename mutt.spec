@@ -16,7 +16,7 @@
 Summary: A text mode mail user agent
 Name: mutt
 Version: 1.5.21
-Release: 27%{?dist}
+Release: 28%{?dist}
 Epoch: 5
 # The entire source code is GPLv2+ except
 # pgpewrap.c setenv.c sha1.c wcwidth.c which are Public Domain
@@ -44,6 +44,10 @@ Patch18: mutt-1.5.21-tlsv1v2.patch
 Patch19: mutt-1.5.20-cve-2014-0467.patch
 Patch20: mutt-1.5.20-domainname.patch
 Patch21: mutt-1.5.20-system_certs.patch
+Patch22: mutt-1.5.21-cve-2018-14354_cve-2018-14357.patch
+Patch23: mutt-1.5.21-cve-2018-14362.patch
+
+
 Url: http://www.mutt.org/
 Requires: mailcap urlview
 BuildRequires: ncurses-devel
@@ -99,6 +103,8 @@ for selecting groups of messages.
 %patch19 -p1 -b .cve-2014-0467
 %patch20 -p1 -b .domainname
 %patch21 -p1 -b .system_certs
+%patch22 -p1 -b .cve-2018-14354_cve-2018-14357
+%patch23 -p1 -b .cve-2018-14362
 
 sed -i.gpgerror 's/`$GPGME_CONFIG --libs`/"\0 -lgpg-error"/' configure
 
@@ -185,7 +191,10 @@ ln -sf ./muttrc.5 $RPM_BUILD_ROOT%{_mandir}/man5/muttrc.local.5
 %{_mandir}/man5/muttrc.*
 
 %changelog
-* Mon Feb 27 2017 Matej Muzila <mmuzila@redhat.com> 5:1.5.21-27
+* Thu Jul 26 2018 Matej Mužila <mmuzila@redhat.com> - 5:1.5.21-28
+- Resolves: CVE-2018-14354 CVE-2018-14357 CVE-2018-14362
+
+* Mon Feb 27 2017 Matej Muzila <mmuzila@redhat.com> - 5:1.5.21-27
 - Resolves #1388511 (System default CA bundle not set as default in compiled-in
   default or config)
 - Resolves #1388512 (mutt sends e-mail with broken "From" header, which has no
