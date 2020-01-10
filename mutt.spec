@@ -16,7 +16,7 @@
 Summary: A text mode mail user agent
 Name: mutt
 Version: 1.5.20
-Release: 8.20091214hg736b6a%{?dist}
+Release: 9.20091214hg736b6a%{?dist}
 Epoch: 5
 # The entire source code is GPLv2+ except
 # pgpewrap.c setenv.c sha1.c wcwidth.c which are Public Domain
@@ -40,6 +40,8 @@ Patch9: mutt-1.5.20-hdrcnt.patch
 Patch10: mutt-1.5.20-pop_sigsegv.patch
 Patch11: mutt-1.5.20-system_certs.patch
 Patch12: mutt-1.5.20-domainname.patch
+Patch13: mutt-1.5.20-cve-2018-14354_cve-2018-14357.patch
+Patch14: mutt-1.5.20-cve-2018-14362.patch
 
 Url: http://www.mutt.org/
 Requires: mailcap urlview
@@ -88,6 +90,8 @@ for selecting groups of messages.
 %patch10 -p1
 %patch11 -p1 -b .system-certs
 %patch12 -p1 -b .domainname
+%patch13 -p1 -b .cve-2018-14354_cve-2018-14357
+%patch14 -p1 -b .cve-2018-14362
 
 install -p -m644 %{SOURCE1} mutt_ldap_query
 
@@ -162,7 +166,10 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/man5/muttrc.*
 
 %changelog
-* Wed Oct 20 2016 Matej Muzila <mmuzila@redhat.com> 5:1.5.20-8.20091214hg736b6a
+* Thu Jul 26 2018 Matej Mužila <mmuzila@redhat.com> - 5:1.5.20-9.20091214hg736b6a
+- Resolves: CVE-2018-14354 CVE-2018-14357 CVE-2018-14362
+
+* Wed Oct 20 2016 Matej Muzila <mmuzila@redhat.com> - 5:1.5.20-8.20091214hg736b6a
 - Resolves #1196787 (System default CA bundle not set as default in compiled-in
   default or config)
 - Resolves #1212646 (mutt sends e-mail with broken "From" header, which has no
