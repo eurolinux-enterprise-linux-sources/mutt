@@ -16,7 +16,7 @@
 Summary: A text mode mail user agent
 Name: mutt
 Version: 1.5.20
-Release: 7.20091214hg736b6a%{?dist}
+Release: 8.20091214hg736b6a%{?dist}
 Epoch: 5
 # The entire source code is GPLv2+ except
 # pgpewrap.c setenv.c sha1.c wcwidth.c which are Public Domain
@@ -38,6 +38,9 @@ Patch8: mutt-1.5.21-certscomp.patch
 Patch9: mutt-1.5.20-hdrcnt.patch
 # http://dev.mutt.org/trac/ticket/3525
 Patch10: mutt-1.5.20-pop_sigsegv.patch
+Patch11: mutt-1.5.20-system_certs.patch
+Patch12: mutt-1.5.20-domainname.patch
+
 Url: http://www.mutt.org/
 Requires: mailcap urlview
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
@@ -83,6 +86,8 @@ for selecting groups of messages.
 %patch8 -p1
 %patch9 -p1 -b .orig
 %patch10 -p1
+%patch11 -p1 -b .system-certs
+%patch12 -p1 -b .domainname
 
 install -p -m644 %{SOURCE1} mutt_ldap_query
 
@@ -157,6 +162,12 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/man5/muttrc.*
 
 %changelog
+* Wed Oct 20 2016 Matej Muzila <mmuzila@redhat.com> 5:1.5.20-8.20091214hg736b6a
+- Resolves #1196787 (System default CA bundle not set as default in compiled-in
+  default or config)
+- Resolves #1212646 (mutt sends e-mail with broken "From" header, which has no
+  host part)
+
 * Fri Jul 25 2014 Jan Pacner <jpacner@redhat.com> - 5:1.5.20-7.20091214hg736b6a
 - Resolves: #690409 (mutt crash - seg fault in mx_update_context), attempt No. 3
 
