@@ -16,7 +16,7 @@
 Summary: A text mode mail user agent
 Name: mutt
 Version: 1.5.20
-Release: 2.20091214hg736b6a%{?dist}.1
+Release: 4.20091214hg736b6a%{?dist}
 Epoch: 5
 # The entire source code is GPLv2+ except
 # pgpewrap.c setenv.c sha1.c wcwidth.c which are Public Domain
@@ -30,6 +30,7 @@ Patch2: mutt-1.5.13-nodotlock.patch
 Patch3: mutt-1.5.18-muttrc.patch
 Patch4: mutt-1.5.18-manual.patch
 Patch5: mutt-1.5.20-testcert.patch
+Patch6: mutt-1.5.20-cve-2014-0467.patch
 Url: http://www.mutt.org/
 Requires: mailcap urlview
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
@@ -70,6 +71,7 @@ for selecting groups of messages.
 %patch3 -p1 -b .muttrc
 %patch4 -p1 -b .manual
 %patch5 -p1 -b .testcert
+%patch6 -p1 -b .cve-2014-0467
 
 install -p -m644 %{SOURCE1} mutt_ldap_query
 
@@ -144,9 +146,13 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/man5/muttrc.*
 
 %changelog
-* Wed Jun 29 2011 Honza Horak <hhorak@redhat.com> 5:1.5.20-2.20091214hg736b6a.el6_1.1
+* Thu Mar 13 2014 Jan Pacner <jpacner@redhat.com> - 5:1.5.20-4.20091214hg736b6a
+- Resolves: #1075872 (CVE-2014-0467, heap-based buffer overflow when parsing
+  certain headers)
+
+* Wed Jun 29 2011 Honza Horak <hhorak@redhat.com> 5:1.5.20-3.20091214hg736b6a
 - Fixed hostname verification of x.509 certificates.
-  Resolves: #716889 (CVE-2011-1429)
+  Resolves: #716890 (CVE-2011-1429)
 
 * Wed Dec 16 2009 Miroslav Lichvar <mlichvar@redhat.com> 5:1.5.20-2.20091214hg736b6a
 - update to hg snapshot 20091214hg736b6a
@@ -505,10 +511,10 @@ rm -rf $RPM_BUILD_ROOT
 * Sat Jan  1 2000 Bill Nottingham <notting@redhat.com>
 - fix an odd y2k issue on receiving mail from ancient clients
 
-* Fri Oct 21 1999 Bill Nottingham <notting@redhat.com>
+* Thu Oct 21 1999 Bill Nottingham <notting@redhat.com>
 - one-point-oh.
 
-* Fri Sep 25 1999 Bill Nottingham <notting@redhat.com>
+* Sat Sep 25 1999 Bill Nottingham <notting@redhat.com>
 - add a buffer overflow patch
 
 * Tue Aug 31 1999 Bill Nottingham <notting@redhat.com>
